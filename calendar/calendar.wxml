@@ -1,0 +1,18 @@
+<view class="calendar">
+  <view class="header">
+    <view class="date">
+      <picker
+        mode="date"
+        fields="month"
+        value="{{pickDate}}"
+        bindchange="bindPickDateChange"
+      >
+        {{pickDateDisplay}}
+      </picker>
+    </view>
+    <view class="body">
+      <view class="week"></view>
+      <view class="day"></view>
+    </view>
+  </view>
+</view>

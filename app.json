@@ -8,5 +8,8 @@
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
   },
+  "usingComponents": {
+    "calendar": "./calendar/calendar"
+  },
   "sitemapLocation": "sitemap.json"
 }
