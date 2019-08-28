@@ -11,8 +11,24 @@
       </picker>
     </view>
     <view class="body">
-      <view class="week"></view>
-      <view class="day"></view>
+      <view class="week">
+        <view class="week-item">一</view>
+        <view class="week-item">二</view>
+        <view class="week-item">三</view>
+        <view class="week-item">四</view>
+        <view class="week-item">五</view>
+        <view class="week-item">六</view>
+        <view class="week-item">日</view>
+      </view>
+      <view class="days">
+        <view
+          class="day"
+          wx:for="{{allDays}}"
+          wx:key="{{item}}"
+        >
+          {{item + 1}}
+        </view>
+      </view>
     </view>
   </view>
 </view>

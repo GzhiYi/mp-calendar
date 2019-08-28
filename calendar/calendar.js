@@ -4,16 +4,47 @@ Component({
   },
   data: {
     pickDate: '',
-    pickDateDisplay: ''
+    pickDateDisplay: '',
+    lastMonth: [],
+    thisMonth: [],
+    nextMonth: [],
+    tMonthFirstDayWeek: 0,
+    allDays: []
   },
   ready() {
-    const self = this
-    self.setData({
-      pickDate: self.parseTime(new Date(), '{y}-{m}'),
-      pickDateDisplay: self.parseTime(new Date(), '{y}年{m}月')
-    })
+    const now = new Date()
+    this.setCalendar(this.parseTime(now, '{y}-{m}'))
   },
   methods: {
+    setCalendar(dateStr) {
+      console.log('*****', dateStr)
+      const self = this
+      const now = new Date(dateStr)
+      console.log('%%%%%', now)
+      let tempWeek = new Date(`${self.parseTime(now, '{y},{m},')}01`).getDay()
+      const tMonthFirstDayWeek = tempWeek === 0 ? 7 : tempWeek
+      let lastMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth())).keys()]
+      let thisMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth() + 1)).keys()]
+      let nextMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth() + 2)).keys()]
+      let lastMonthFinal = [...lastMonthOrigin].splice(lastMonthOrigin.length - (tMonthFirstDayWeek - 1), lastMonthOrigin.length)
+      let nextMonthFinal = [...nextMonthOrigin].splice(0, 42 - lastMonthFinal.length - thisMonthOrigin.length)
+      console.log('lastMonthOrigin', lastMonthOrigin)
+      console.log('thisMonthOrigin', thisMonthOrigin)
+      console.log('nextMonthOrigin', nextMonthOrigin)
+      console.log('lastMonthFinal', lastMonthFinal)
+      console.log('nextMonthFinal', nextMonthFinal)
+      console.log('tMonthFirstDayWeek', tMonthFirstDayWeek)
+      self.setData({
+        pickDate: self.parseTime(now, '{y}-{m}'),
+        pickDateDisplay: self.parseTime(now, '{y}年{m}月'),
+        lastMonth: lastMonthFinal,
+        thisMonth: thisMonthOrigin,
+        nextMonth: nextMonthFinal,
+        tMonthFirstDayWeek,
+        allDays: [...lastMonthFinal, ...thisMonthOrigin, ...nextMonthFinal]
+      })
+      console.log(self.data)
+    },
     bindPickDateChange(event) {
       console.log(event)
       const { value } = event.detail
@@ -21,6 +52,14 @@ Component({
         pickDate: value,
         pickDateDisplay: this.parseTime(value, '{y}年{m}月')
       })
+      this.setCalendar(value)
+    },
+    // 获取月天数
+    getMonthDayNum(year, month) {
+      console.log('来吧', year, month)
+      const d = new Date(year, month, 0)
+      console.log('返回', d.getDate())
+      return d.getDate()
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {

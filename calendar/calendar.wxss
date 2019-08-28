@@ -1,1 +1,18 @@
-/* calendar.wxss */
+.week {
+  display: flex;
+}
+.week-item {
+  width: 40rpx;
+  height: 40rpx;
+  margin: 0 20rpx;
+}
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  width: 560rpx;
+}
+.day {
+  width: 40rpx;
+  height: 40rpx;
+  margin: 0 20rpx;
+}
