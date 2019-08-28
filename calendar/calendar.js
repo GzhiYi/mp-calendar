@@ -11,11 +11,16 @@ Component({
     thisMonth: [],
     nextMonth: [],
     tMonthFirstDayWeek: 0,
-    allDays: []
+    allDays: [],
+    selectedDate: ''
   },
   ready() {
     const now = new Date()
     this.setCalendar(this.parseTime(now, '{y}-{m}'))
+    this.setData({
+      selectedDate: this.parseTime(now, '{y}-{m}-{d}')
+    })
+    console.log(this.data.selectedDate)
   },
   methods: {
     setCalendar(dateStr) {

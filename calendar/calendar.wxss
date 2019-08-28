@@ -1,5 +1,5 @@
 .calendar {
-  width: 75%;
+  width: 80%;
   background-color: #fff;
   padding: 40rpx 20rpx;
   margin: 0 auto;
@@ -25,7 +25,7 @@
   width: 91%;
   height: 4rpx;
   background-color: #eceef0;
-  margin: 28rpx auto 34rpx;
+  margin: 28rpx auto;
 }
 .week {
   display: flex;
@@ -33,7 +33,6 @@
 }
 .week-item {
   width: 7%;
-  height: 40rpx;
   margin: 0 20rpx;
   text-align: center;
 }
@@ -46,9 +45,11 @@
 }
 .day {
   width: 7%;
-  height: 40rpx;
-  margin: 12rpx 20rpx;
   text-align: center;
+  padding: 4px 4px;
+  margin: 6rpx 12rpx;
+  font-size: 27rpx;
+  line-height: 40rpx;
 }
 .last-month, .next-month {
   opacity: .4;
@@ -60,4 +61,9 @@
   width: 32rpx;
   height: 32rpx;
   margin-top: 10rpx;
+}
+.selected-date {
+  color: #fff;
+  background-color: #0075ff;
+  border-radius: 50%;
 }

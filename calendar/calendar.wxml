@@ -22,35 +22,31 @@
       </view>
     </view>
     <view class="divide"></view>
-    <view class="body">
-      <view class="week">
-        <view class="week-item">一</view>
-        <view class="week-item">二</view>
-        <view class="week-item">三</view>
-        <view class="week-item">四</view>
-        <view class="week-item">五</view>
-        <view class="week-item weeken">六</view>
-        <view class="week-item weeken">日</view>
-      </view>
-    </view>
   </view>
   <view class="days">
+    <view class="day">一</view>
+    <view class="day">二</view>
+    <view class="day">三</view>
+    <view class="day">四</view>
+    <view class="day">五</view>
+    <view class="day weeken">六</view>
+    <view class="day weeken">日</view>
     <view
-      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
       wx:for="{{lastMonth}}"
       wx:key="{{item}}"
     >
       {{item.dateNumber}}
     </view>
     <view
-      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
       wx:for="{{thisMonth}}"
       wx:key="{{item}}"
     >
       {{item.dateNumber}}
     </view>
     <view
-      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
       wx:for="{{nextMonth}}"
       wx:key="{{item}}"
     >
