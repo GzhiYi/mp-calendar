@@ -32,25 +32,32 @@
     <view class="day weeken">六</view>
     <view class="day weeken">日</view>
     <view
-      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
+      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
       wx:for="{{lastMonth}}"
       wx:key="{{item}}"
+      bindtap="onPickDay"
+      data-day="{{item}}"
     >
       {{item.dateNumber}}
     </view>
     <view
-      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
+      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
       wx:for="{{thisMonth}}"
       wx:key="{{item}}"
+      bindtap="onPickDay"
+      data-day="{{item}}"
     >
       {{item.dateNumber}}
     </view>
     <view
-      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}}"
+      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
       wx:for="{{nextMonth}}"
       wx:key="{{item}}"
+      bindtap="onPickDay"
+      data-day="{{item}}"
     >
       {{item.dateNumber}}
     </view>
   </view>
 </view>
+<view style="text-align: center;margin: 40rpx 0;">{{selectedDate}}</view>

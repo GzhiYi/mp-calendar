@@ -12,13 +12,15 @@ Component({
     nextMonth: [],
     tMonthFirstDayWeek: 0,
     allDays: [],
-    selectedDate: ''
+    selectedDate: '',
+    today: ''
   },
   ready() {
     const now = new Date()
     this.setCalendar(this.parseTime(now, '{y}-{m}'))
     this.setData({
-      selectedDate: this.parseTime(now, '{y}-{m}-{d}')
+      selectedDate: this.parseTime(now, '{y}-{m}-{d}'),
+      today: this.parseTime(now, '{y}-{m}-{d}')
     })
     console.log(this.data.selectedDate)
   },
@@ -88,6 +90,9 @@ Component({
           break;
         case 'reset':
           newDate = new Date()
+          this.setData({
+            selectedDate: this.parseTime(new Date(), '{y}-{m}-{d}')
+          })
           break;
         case 'next':
           newDate = oldMonth === 12 ? `${oldYear + 1}-01` : `${oldYear}-${oldMonth + 1 < 10 ? `0${oldMonth + 1}` : oldMonth + 1}`
@@ -95,6 +100,14 @@ Component({
       }
       this.setCalendar(this.parseTime(new Date(newDate), '{y}-{m}'))
       wx.vibrateShort()
+    },
+    onPickDay(event) {
+      console.log(event)
+      const { day } = event.currentTarget.dataset
+      
+      this.setData({
+        selectedDate: day.date
+      })
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {

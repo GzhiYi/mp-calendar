@@ -31,11 +31,6 @@
   display: flex;
   justify-content: center;
 }
-.week-item {
-  width: 7%;
-  margin: 0 20rpx;
-  text-align: center;
-}
 .days {
   display: flex;
   flex-wrap: wrap;
@@ -44,7 +39,8 @@
 
 }
 .day {
-  width: 7%;
+  width: 40rpx;
+  height: 40rpx;
   text-align: center;
   padding: 4px 4px;
   margin: 6rpx 12rpx;
@@ -62,8 +58,14 @@
   height: 32rpx;
   margin-top: 10rpx;
 }
+
+.today {
+  border-bottom: 3rpx solid #0075ff;
+  margin: 6rpx 12rpx 3rpx;
+}
 .selected-date {
   color: #fff;
   background-color: #0075ff;
   border-radius: 50%;
+  border: none;
 }
