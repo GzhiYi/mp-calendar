@@ -27,8 +27,22 @@
       </view>
       <view class="days">
         <view
+          class="day last-month"
+          wx:for="{{lastMonth}}"
+          wx:key="{{item}}"
+        >
+          {{item + 1}}
+        </view>
+        <view
           class="day"
-          wx:for="{{allDays}}"
+          wx:for="{{thisMonth}}"
+          wx:key="{{item}}"
+        >
+          {{item + 1}}
+        </view>
+        <view
+          class="day next-month"
+          wx:for="{{nextMonth}}"
           wx:key="{{item}}"
         >
           {{item + 1}}

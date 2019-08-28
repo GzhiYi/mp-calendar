@@ -17,9 +17,11 @@ Component({
   },
   methods: {
     setCalendar(dateStr) {
+      console.log('dateStr', dateStr)
       const self = this
       const now = new Date(dateStr)
-      let tempWeek = new Date(`${self.parseTime(now, '{y},{m},')}01`).getDay()
+      let tempWeek = new Date(`${self.parseTime(now, '{y}-{m}-')}01`).getDay()
+      console.log("iosWeek", tempWeek, `${self.parseTime(now, '{y}-{m}-')}01`, new Date('2018,08,01').getDay(), new Date('2018-08-01').getDay())
       const tMonthFirstDayWeek = tempWeek === 0 ? 7 : tempWeek
       let lastMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth())).keys()]
       let thisMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth() + 1)).keys()]
@@ -69,17 +71,17 @@ Component({
       let newDate = ''
       switch(mode) {
         case 'pre':
-          newDate = oldMonth === 1 ? `${oldYear - 1}-12` : `${oldYear}-${oldMonth - 1}`
+          newDate = oldMonth === 1 ? `${oldYear - 1}-12` : `${oldYear}-${oldMonth - 1 < 10 ? `0${oldMonth - 1}` : oldMonth - 1}`
           break;
         case 'reset':
           newDate = new Date()
           break;
         case 'next':
-          newDate = oldMonth === 12 ? `${oldYear + 1}-1` : `${oldYear}-${oldMonth + 1}`
+          newDate = oldMonth === 12 ? `${oldYear + 1}-01` : `${oldYear}-${oldMonth + 1 < 10 ? `0${oldMonth + 1}` : oldMonth + 1}`
           break;
       }
-      console.log('hahaha', newDate, this.parseTime(newDate, '{y}-{m}'))
-      this.setCalendar(this.parseTime(newDate, '{y}-{m}'))
+      console.log('excuse', newDate, this.parseTime(newDate, '{y}-{m}'), new Date('2019-9'))
+      this.setCalendar(this.parseTime(new Date(newDate), '{y}-{m}'))
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {
