@@ -9,6 +9,11 @@
       >
         {{pickDateDisplay}}
       </picker>
+      <view class="controller">
+        <view class="control-item" bindtap="control" data-mode="pre">上</view>
+        <view class="control-item" bindtap="control" data-mode="reset">重置</view>
+        <view class="control-item" bindtap="control" data-mode="next">下</view>
+      </view>
     </view>
     <view class="body">
       <view class="week">

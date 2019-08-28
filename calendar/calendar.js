@@ -17,10 +17,8 @@ Component({
   },
   methods: {
     setCalendar(dateStr) {
-      console.log('*****', dateStr)
       const self = this
       const now = new Date(dateStr)
-      console.log('%%%%%', now)
       let tempWeek = new Date(`${self.parseTime(now, '{y},{m},')}01`).getDay()
       const tMonthFirstDayWeek = tempWeek === 0 ? 7 : tempWeek
       let lastMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth())).keys()]
@@ -60,6 +58,28 @@ Component({
       const d = new Date(year, month, 0)
       console.log('返回', d.getDate())
       return d.getDate()
+    },
+    control(event) {
+      console.log(event)
+      const { mode } = event.currentTarget.dataset
+      const { pickDate } = this.data
+      let dateArr = pickDate.split('-')
+      let oldMonth = Number(dateArr[1])
+      let oldYear = Number(dateArr[0])
+      let newDate = ''
+      switch(mode) {
+        case 'pre':
+          newDate = oldMonth === 1 ? `${oldYear - 1}-12` : `${oldYear}-${oldMonth - 1}`
+          break;
+        case 'reset':
+          newDate = new Date()
+          break;
+        case 'next':
+          newDate = oldMonth === 12 ? `${oldYear + 1}-1` : `${oldYear}-${oldMonth + 1}`
+          break;
+      }
+      console.log('hahaha', newDate, this.parseTime(newDate, '{y}-{m}'))
+      this.setCalendar(this.parseTime(newDate, '{y}-{m}'))
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {
