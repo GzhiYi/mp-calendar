@@ -1,3 +1,5 @@
+const DAY_NUM = 42
+const WEEK_DAY_NUM = 7
 Component({
   properties: {
 
@@ -19,31 +21,40 @@ Component({
     setCalendar(dateStr) {
       console.log('dateStr', dateStr)
       const self = this
-      const now = new Date(dateStr)
-      let tempWeek = new Date(`${self.parseTime(now, '{y}-{m}-')}01`).getDay()
-      console.log("iosWeek", tempWeek, `${self.parseTime(now, '{y}-{m}-')}01`, new Date('2018,08,01').getDay(), new Date('2018-08-01').getDay())
-      const tMonthFirstDayWeek = tempWeek === 0 ? 7 : tempWeek
-      let lastMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth())).keys()]
-      let thisMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth() + 1)).keys()]
-      let nextMonthOrigin = [...Array(self.getMonthDayNum(now.getFullYear(), now.getMonth() + 2)).keys()]
+      const selectDate = new Date(dateStr)
+      const dateSplit = dateStr.split('-')
+      const thisYear = dateSplit[0]
+      const thisMonth = dateSplit[1]
+      let tempWeek = new Date(`${self.parseTime(selectDate, '{y}-{m}-')}01`).getDay()
+      const tMonthFirstDayWeek = tempWeek === 0 ? WEEK_DAY_NUM : tempWeek
+      let lastMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth())).keys()]
+      let thisMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 1)).keys()]
+      let nextMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 2)).keys()]
       let lastMonthFinal = [...lastMonthOrigin].splice(lastMonthOrigin.length - (tMonthFirstDayWeek - 1), lastMonthOrigin.length)
-      let nextMonthFinal = [...nextMonthOrigin].splice(0, 42 - lastMonthFinal.length - thisMonthOrigin.length)
-      console.log('lastMonthOrigin', lastMonthOrigin)
-      console.log('thisMonthOrigin', thisMonthOrigin)
-      console.log('nextMonthOrigin', nextMonthOrigin)
-      console.log('lastMonthFinal', lastMonthFinal)
-      console.log('nextMonthFinal', nextMonthFinal)
-      console.log('tMonthFirstDayWeek', tMonthFirstDayWeek)
+      let nextMonthFinal = [...nextMonthOrigin].splice(0, DAY_NUM - lastMonthFinal.length - thisMonthOrigin.length)
+      const pickDate = self.parseTime(selectDate, '{y}-{m}')
+      this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth))
       self.setData({
-        pickDate: self.parseTime(now, '{y}-{m}'),
-        pickDateDisplay: self.parseTime(now, '{y}年{m}月'),
-        lastMonth: lastMonthFinal,
-        thisMonth: thisMonthOrigin,
-        nextMonth: nextMonthFinal,
+        pickDate,
+        pickDateDisplay: self.parseTime(selectDate, '{y}年{m}月'),
+        lastMonth: this.mapMonth(lastMonthFinal, thisYear, Number(thisMonth) - 1),
+        thisMonth: this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth)),
+        nextMonth: this.mapMonth(nextMonthFinal, thisYear, Number(thisMonth) + 1),
         tMonthFirstDayWeek,
         allDays: [...lastMonthFinal, ...thisMonthOrigin, ...nextMonthFinal]
       })
       console.log(self.data)
+    },
+    mapMonth(dayArr, year, month) {
+      return dayArr.map(item => {
+        const date = `${year}-${month < 10 ? `0${month}` : month}-${(item + 1) < 10 ? `0${item + 1}` : item + 1}`
+        const week = new Date(date).getDay()
+        return {
+          dateNumber: item + 1,
+          date,
+          week: week === 0 ? 7 : week
+        }
+      })
     },
     bindPickDateChange(event) {
       console.log(event)
@@ -56,13 +67,10 @@ Component({
     },
     // 获取月天数
     getMonthDayNum(year, month) {
-      console.log('来吧', year, month)
       const d = new Date(year, month, 0)
-      console.log('返回', d.getDate())
       return d.getDate()
     },
     control(event) {
-      console.log(event)
       const { mode } = event.currentTarget.dataset
       const { pickDate } = this.data
       let dateArr = pickDate.split('-')
@@ -80,8 +88,8 @@ Component({
           newDate = oldMonth === 12 ? `${oldYear + 1}-01` : `${oldYear}-${oldMonth + 1 < 10 ? `0${oldMonth + 1}` : oldMonth + 1}`
           break;
       }
-      console.log('excuse', newDate, this.parseTime(newDate, '{y}-{m}'), new Date('2019-9'))
       this.setCalendar(this.parseTime(new Date(newDate), '{y}-{m}'))
+      wx.vibrateShort()
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {

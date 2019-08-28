@@ -7,14 +7,21 @@
         value="{{pickDate}}"
         bindchange="bindPickDateChange"
       >
-        {{pickDateDisplay}}
+        <text class="date-display">{{pickDateDisplay}}</text>
       </picker>
       <view class="controller">
-        <view class="control-item" bindtap="control" data-mode="pre">上</view>
-        <view class="control-item" bindtap="control" data-mode="reset">重置</view>
-        <view class="control-item" bindtap="control" data-mode="next">下</view>
+        <view class="control-item" bindtap="control" data-mode="pre">
+          <image src="./left-arrow.png" class="icon"></image>
+        </view>
+        <view class="control-item" bindtap="control" data-mode="reset">
+          <image src="./rotate.png" class="icon"></image>
+        </view>
+        <view class="control-item" bindtap="control" data-mode="next">
+          <image src="./right-arrow.png" class="icon"></image>
+        </view>
       </view>
     </view>
+    <view class="divide"></view>
     <view class="body">
       <view class="week">
         <view class="week-item">一</view>
@@ -22,32 +29,32 @@
         <view class="week-item">三</view>
         <view class="week-item">四</view>
         <view class="week-item">五</view>
-        <view class="week-item">六</view>
-        <view class="week-item">日</view>
+        <view class="week-item weeken">六</view>
+        <view class="week-item weeken">日</view>
       </view>
-      <view class="days">
-        <view
-          class="day last-month"
-          wx:for="{{lastMonth}}"
-          wx:key="{{item}}"
-        >
-          {{item + 1}}
-        </view>
-        <view
-          class="day"
-          wx:for="{{thisMonth}}"
-          wx:key="{{item}}"
-        >
-          {{item + 1}}
-        </view>
-        <view
-          class="day next-month"
-          wx:for="{{nextMonth}}"
-          wx:key="{{item}}"
-        >
-          {{item + 1}}
-        </view>
-      </view>
+    </view>
+  </view>
+  <view class="days">
+    <view
+      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      wx:for="{{lastMonth}}"
+      wx:key="{{item}}"
+    >
+      {{item.dateNumber}}
+    </view>
+    <view
+      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      wx:for="{{thisMonth}}"
+      wx:key="{{item}}"
+    >
+      {{item.dateNumber}}
+    </view>
+    <view
+      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}}"
+      wx:for="{{nextMonth}}"
+      wx:key="{{item}}"
+    >
+      {{item.dateNumber}}
     </view>
   </view>
 </view>

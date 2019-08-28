@@ -1,35 +1,63 @@
 .calendar {
-  width: 80%;
+  width: 75%;
+  background-color: #fff;
+  padding: 40rpx 20rpx;
+  margin: 0 auto;
+  border-radius: 24rpx;
 }
 .controller {
   display: flex;
 }
 .control-item {
   font-size: 26rpx;
-  margin: 0 18rpx;
+  padding: 0 14px;
+}
+.date-display {
+  font-size: 28rpx;
+  padding-left: 22rpx;
 }
 .date {
   display: flex;
   justify-content: space-between;
+  margin: 0 0 20rpx;
+}
+.divide {
+  width: 91%;
+  height: 4rpx;
+  background-color: #eceef0;
+  margin: 28rpx auto 34rpx;
 }
 .week {
   display: flex;
+  justify-content: center;
 }
 .week-item {
-  width: 40rpx;
+  width: 7%;
   height: 40rpx;
   margin: 0 20rpx;
+  text-align: center;
 }
 .days {
   display: flex;
   flex-wrap: wrap;
-  width: 560rpx;
+  justify-content: center;
+  width: 100%;
+
 }
 .day {
-  width: 40rpx;
+  width: 7%;
   height: 40rpx;
   margin: 12rpx 20rpx;
+  text-align: center;
 }
 .last-month, .next-month {
-  color: #ccc;
+  opacity: .4;
+}
+.weeken {
+  color: #f75676;
+}
+.icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-top: 10rpx;
 }
