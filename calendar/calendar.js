@@ -6,25 +6,27 @@ Component({
     defaultSelectDate: {
       type: String,
       value: ''
+    },
+    mode: {
+      type: String,
+      value: ''
     }
   },
   data: {
     pickDate: '',
     pickDateDisplay: '',
-    lastMonth: [],
-    thisMonth: [],
-    nextMonth: [],
     tMonthFirstDayWeek: 0,
     allDays: [],
     selectedDate: '',
-    today: ''
+    today: '',
+    beginDate: '',
+    endDate: '',
+    dateRange: []
   },
   ready() {
     const now = new Date()
     const { defaultSelectDate } = this.data
-    this.setCalendar(this.parseTime(now, '{y}-{m}'))
     if (!DATE_CHECK.test(this.data.defaultSelectDate)) {
-      console.error(`Invalid date: ${defaultSelectDate} from props.`)
       this.setData({
         defaultSelectDate: ''
       })
@@ -33,11 +35,10 @@ Component({
       selectedDate: this.data.defaultSelectDate || this.parseTime(now, '{y}-{m}-{d}'),
       today: this.parseTime(now, '{y}-{m}-{d}')
     })
-    console.log('*****', this.data.defaultSelectDate || now, this.data.selectedDate)
+    this.setCalendar(this.parseTime(now, '{y}-{m}'))
   },
   methods: {
     setCalendar(dateStr) {
-      console.log('dateStr', dateStr)
       const self = this
       const selectDate = new Date(dateStr)
       const dateSplit = dateStr.split('-')
@@ -51,31 +52,27 @@ Component({
       let lastMonthFinal = [...lastMonthOrigin].splice(lastMonthOrigin.length - (tMonthFirstDayWeek - 1), lastMonthOrigin.length)
       let nextMonthFinal = [...nextMonthOrigin].splice(0, DAY_NUM - lastMonthFinal.length - thisMonthOrigin.length)
       const pickDate = self.parseTime(selectDate, '{y}-{m}')
-      this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth))
       self.setData({
         pickDate,
         pickDateDisplay: self.parseTime(selectDate, '{y}年{m}月'),
-        lastMonth: this.mapMonth(lastMonthFinal, thisYear, Number(thisMonth) - 1),
-        thisMonth: this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth)),
-        nextMonth: this.mapMonth(nextMonthFinal, thisYear, Number(thisMonth) + 1),
         tMonthFirstDayWeek,
-        allDays: [...lastMonthFinal, ...thisMonthOrigin, ...nextMonthFinal]
+        allDays: [...this.mapMonth(lastMonthFinal, thisYear, Number(thisMonth) - 1, pickDate), ...this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth), pickDate), ...this.mapMonth(nextMonthFinal, thisYear, Number(thisMonth) + 1, pickDate)]
       })
-      console.log(self.data)
     },
-    mapMonth(dayArr, year, month) {
+    mapMonth(dayArr, year, month, pickDate = null) {
+      const thisMonthNum = pickDate && Number(pickDate.split('-')[1])
       return dayArr.map(item => {
         const date = `${year}-${month < 10 ? `0${month}` : month}-${(item + 1) < 10 ? `0${item + 1}` : item + 1}`
         const week = new Date(date).getDay()
         return {
           dateNumber: item + 1,
           date,
-          week: week === 0 ? 7 : week
+          week: week === 0 ? 7 : week,
+          position: thisMonthNum === month ? '' : month === thisMonthNum - 1 ? 'next-month' : 'pre-month'
         }
       })
     },
     bindPickDateChange(event) {
-      console.log(event)
       const { value } = event.detail
       this.setData({
         pickDate: value,
@@ -102,9 +99,16 @@ Component({
           break;
         case 'reset':
           newDate = new Date()
-          this.setData({
-            selectedDate: this.parseTime(new Date(), '{y}-{m}-{d}')
-          })
+          if (this.data.mode === 'range') {
+            this.setData({
+              selectedDate: '',
+              dateRange: []
+            })
+          } else {
+            this.setData({
+              selectedDate: this.parseTime(new Date(), '{y}-{m}-{d}')
+            })
+          }
           break;
         case 'next':
           newDate = oldMonth === 12 ? `${oldYear + 1}-01` : `${oldYear}-${oldMonth + 1 < 10 ? `0${oldMonth + 1}` : oldMonth + 1}`
@@ -119,13 +123,51 @@ Component({
       wx.vibrateShort()
     },
     onPickDay(event) {
-      console.log(event)
       const { day } = event.currentTarget.dataset
-      
-      this.setData({
-        selectedDate: day.date
+      const { mode, beginDate, endDate } = this.data
+      let dateRange = [...this.data.dateRange]
+      if (mode === 'range') {
+        this.setData({
+          selectedDate: ''
+        })
+        if (!dateRange[0]) {
+          dateRange.push(day.date)
+          this.setData({
+            dateRange
+          })
+        } else if (!dateRange[1]) {
+          dateRange.push(day.date)
+          dateRange.sort((a, b) => a > b ? 1 : -1)
+          this.setData({
+            dateRange
+          })
+          this.findRange(dateRange)
+        } else {
+          this.setData({
+            dateRange: [day.date]
+          })
+          this.findRange([day.date])
+        }
+        
+      } else {
+        this.setData({
+          selectedDate: day.date
+        })
+        this.triggerEvent('onPickDay', day)
+      }
+    },
+    // 找出range内的日期
+    findRange(dateRange) {
+      const minTimeStamp = Date.parse(dateRange[0])
+      const maxTimeStamp = Date.parse(dateRange[1])
+      let allDays = [...this.data.allDays]
+      allDays.forEach(item => {
+        const parseDate = Date.parse(item.date)
+        item[`inRange`] = dateRange.length === 1 ? false : parseDate < maxTimeStamp && parseDate > minTimeStamp
       })
-      this.triggerEvent('onPickDay', day)
+      this.setData({
+        allDays
+      })
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {

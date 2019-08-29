@@ -47,7 +47,7 @@
   font-size: 27rpx;
   line-height: 40rpx;
 }
-.last-month, .next-month {
+.pre-month, .next-month {
   opacity: .4;
 }
 .weeken {
@@ -63,9 +63,12 @@
   border-bottom: 3rpx solid #0075ff;
   margin: 6rpx 12rpx 3rpx;
 }
-.selected-date {
+.selected-date, .range-pick {
   color: #fff;
   background-color: #0075ff;
   border-radius: 50%;
   border: none;
+}
+.inrange {
+  background-color: #e6f2ff;
 }

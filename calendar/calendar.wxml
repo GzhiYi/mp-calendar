@@ -1,3 +1,11 @@
+<wxs module="rangeStyle">
+var handle = function(day, dateRange) {
+  if (dateRange.indexOf(day.date) !== -1) return 'range-pick';
+};
+
+module.exports.handle = handle;
+</wxs>
+
 <view class="calendar">
   <view class="header">
     <view class="date">
@@ -32,26 +40,8 @@
     <view class="day weeken">六</view>
     <view class="day weeken">日</view>
     <view
-      class="day last-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
-      wx:for="{{lastMonth}}"
-      wx:key="{{item}}"
-      bindtap="onPickDay"
-      data-day="{{item}}"
-    >
-      {{item.dateNumber}}
-    </view>
-    <view
-      class="day {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
-      wx:for="{{thisMonth}}"
-      wx:key="{{item}}"
-      bindtap="onPickDay"
-      data-day="{{item}}"
-    >
-      {{item.dateNumber}}
-    </view>
-    <view
-      class="day next-month {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}}"
-      wx:for="{{nextMonth}}"
+      class="day {{item.position}} {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}} {{item.inRange ? 'inrange' : ''}} {{rangeStyle.handle(item, dateRange)}}"
+      wx:for="{{allDays}}"
       wx:key="{{item}}"
       bindtap="onPickDay"
       data-day="{{item}}"

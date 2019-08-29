@@ -4,4 +4,5 @@
   bind:onControl="onControl"
   bind:onPickDay="onPickDay"
   defaultSelectDate="2019-08-28"
+  mode="range"
 ></calendar>
