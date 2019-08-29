@@ -5,8 +5,8 @@ Page({
 
   },
   onLoad: function () {},
-  onPickDateChange(value) {
-    console.log('parent', value)
+  onPickDateChange(event) {
+    console.log('parent onPickDateChange', event)
   },
   onControl(event) {
     console.log('parent onControl', event)

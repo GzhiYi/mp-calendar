@@ -4,7 +4,4 @@
   bind:onControl="onControl"
   bind:onPickDay="onPickDay"
   bind:onRangePick="onRangePick"
-  defaultSelectDate="2019-08-28"
-  showToday="{{true}}"
-  mode="range"
 ></calendar>
