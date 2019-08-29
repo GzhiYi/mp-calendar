@@ -19,13 +19,10 @@ Component({
     allDays: [],
     selectedDate: '',
     today: '',
-    beginDate: '',
-    endDate: '',
     dateRange: []
   },
   ready() {
     const now = new Date()
-    const { defaultSelectDate } = this.data
     if (!DATE_CHECK.test(this.data.defaultSelectDate)) {
       this.setData({
         defaultSelectDate: ''
@@ -41,22 +38,28 @@ Component({
     setCalendar(dateStr) {
       const self = this
       const selectDate = new Date(dateStr)
+      const pickDate = self.parseTime(selectDate, '{y}-{m}')
       const dateSplit = dateStr.split('-')
       const thisYear = dateSplit[0]
       const thisMonth = dateSplit[1]
-      let tempWeek = new Date(`${self.parseTime(selectDate, '{y}-{m}-')}01`).getDay()
+      const tempWeek = new Date(`${self.parseTime(selectDate, '{y}-{m}-')}01`).getDay()
       const tMonthFirstDayWeek = tempWeek === 0 ? WEEK_DAY_NUM : tempWeek
-      let lastMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth())).keys()]
-      let thisMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 1)).keys()]
-      let nextMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 2)).keys()]
-      let lastMonthFinal = [...lastMonthOrigin].splice(lastMonthOrigin.length - (tMonthFirstDayWeek - 1), lastMonthOrigin.length)
-      let nextMonthFinal = [...nextMonthOrigin].splice(0, DAY_NUM - lastMonthFinal.length - thisMonthOrigin.length)
-      const pickDate = self.parseTime(selectDate, '{y}-{m}')
+
+      const lastMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth())).keys()]
+      const thisMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 1)).keys()]
+      const nextMonthOrigin = [...Array(self.getMonthDayNum(selectDate.getFullYear(), selectDate.getMonth() + 2)).keys()]
+      const lastMonthFinal = [...lastMonthOrigin].splice(lastMonthOrigin.length - (tMonthFirstDayWeek - 1), lastMonthOrigin.length)
+      const nextMonthFinal = [...nextMonthOrigin].splice(0, DAY_NUM - lastMonthFinal.length - thisMonthOrigin.length)
+      
       self.setData({
         pickDate,
         pickDateDisplay: self.parseTime(selectDate, '{y}年{m}月'),
         tMonthFirstDayWeek,
-        allDays: [...this.mapMonth(lastMonthFinal, thisYear, Number(thisMonth) - 1, pickDate), ...this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth), pickDate), ...this.mapMonth(nextMonthFinal, thisYear, Number(thisMonth) + 1, pickDate)]
+        allDays: [
+          ...this.mapMonth(lastMonthFinal, thisYear, Number(thisMonth) - 1, pickDate),
+          ...this.mapMonth(thisMonthOrigin, thisYear, Number(thisMonth), pickDate),
+          ...this.mapMonth(nextMonthFinal, thisYear, Number(thisMonth) + 1, pickDate)
+        ]
       })
     },
     mapMonth(dayArr, year, month, pickDate = null) {
@@ -127,7 +130,7 @@ Component({
     },
     onPickDay(event) {
       const { day } = event.currentTarget.dataset
-      const { mode, beginDate, endDate } = this.data
+      const { mode } = this.data
       let dateRange = [...this.data.dateRange]
       if (mode === 'range') {
         this.setData({
