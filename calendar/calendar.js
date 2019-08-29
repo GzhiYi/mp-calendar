@@ -10,6 +10,10 @@ Component({
     mode: {
       type: String,
       value: ''
+    },
+    showToday: {
+      type: Boolean,
+      value: true
     }
   },
   data: {
@@ -148,6 +152,7 @@ Component({
             dateRange
           })
           this.findRange(dateRange)
+          this.triggerEvent('onRangePick', dateRange)
         } else {
           this.setData({
             dateRange: [day.date]

@@ -19,13 +19,13 @@ module.exports.handle = handle;
       </picker>
       <view class="controller">
         <view class="control-item" bindtap="control" data-mode="pre">
-          <image src="./left-arrow.png" class="icon"></image>
+          <image src="https://images.vrm.cn/2019/08/29/left-arrow.png" class="icon"></image>
         </view>
         <view class="control-item" bindtap="control" data-mode="reset">
-          <image src="./rotate.png" class="icon"></image>
+          <image src="https://images.vrm.cn/2019/08/29/rotate.png" class="icon"></image>
         </view>
         <view class="control-item" bindtap="control" data-mode="next">
-          <image src="./right-arrow.png" class="icon"></image>
+          <image src="https://images.vrm.cn/2019/08/29/right-arrow.png" class="icon"></image>
         </view>
       </view>
     </view>
@@ -40,7 +40,7 @@ module.exports.handle = handle;
     <view class="day weeken">六</view>
     <view class="day weeken">日</view>
     <view
-      class="day {{item.position}} {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date ? 'today' : ''}} {{item.inRange ? 'inrange' : ''}} {{rangeStyle.handle(item, dateRange)}}"
+      class="day {{item.position}} {{item.week === 6 || item.week === 7 ? 'weeken' : ''}} {{selectedDate === item.date ? 'selected-date' : ''}} {{today === item.date && showToday ? 'today' : ''}} {{item.inRange ? 'inrange' : ''}} {{rangeStyle.handle(item, dateRange)}}"
       wx:for="{{allDays}}"
       wx:key="{{item}}"
       bindtap="onPickDay"

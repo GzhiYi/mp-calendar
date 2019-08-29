@@ -9,9 +9,12 @@ Page({
     console.log('parent', value)
   },
   onControl(event) {
-    console.log('parent control', event)
+    console.log('parent onControl', event)
   },
   onPickDay(event) {
-    console.log('parent pickday', event)
+    console.log('parent onPickDay', event)
+  },
+  onRangePick(event) {
+    console.log('parent onRangePick', event)
   }
 })
