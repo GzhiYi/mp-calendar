@@ -1,8 +1,12 @@
 const DAY_NUM = 42
 const WEEK_DAY_NUM = 7
+const DATE_CHECK = /^(\d{4})-(\d{2})-(\d{2})$/
 Component({
   properties: {
-
+    defaultSelectDate: {
+      type: String,
+      value: ''
+    }
   },
   data: {
     pickDate: '',
@@ -17,12 +21,19 @@ Component({
   },
   ready() {
     const now = new Date()
+    const { defaultSelectDate } = this.data
     this.setCalendar(this.parseTime(now, '{y}-{m}'))
+    if (!DATE_CHECK.test(this.data.defaultSelectDate)) {
+      console.error(`Invalid date: ${defaultSelectDate} from props.`)
+      this.setData({
+        defaultSelectDate: ''
+      })
+    }
     this.setData({
-      selectedDate: this.parseTime(now, '{y}-{m}-{d}'),
+      selectedDate: this.data.defaultSelectDate || this.parseTime(now, '{y}-{m}-{d}'),
       today: this.parseTime(now, '{y}-{m}-{d}')
     })
-    console.log(this.data.selectedDate)
+    console.log('*****', this.data.defaultSelectDate || now, this.data.selectedDate)
   },
   methods: {
     setCalendar(dateStr) {
@@ -71,6 +82,7 @@ Component({
         pickDateDisplay: this.parseTime(value, '{y}年{m}月')
       })
       this.setCalendar(value)
+      this.triggerEvent('onPickDateChange', value)
     },
     // 获取月天数
     getMonthDayNum(year, month) {
@@ -98,7 +110,12 @@ Component({
           newDate = oldMonth === 12 ? `${oldYear + 1}-01` : `${oldYear}-${oldMonth + 1 < 10 ? `0${oldMonth + 1}` : oldMonth + 1}`
           break;
       }
-      this.setCalendar(this.parseTime(new Date(newDate), '{y}-{m}'))
+      const timeParse = this.parseTime(new Date(newDate), '{y}-{m}')
+      this.setCalendar(timeParse)
+      this.triggerEvent('onControl', {
+        mode,
+        newDate: timeParse
+      })
       wx.vibrateShort()
     },
     onPickDay(event) {
@@ -108,6 +125,7 @@ Component({
       this.setData({
         selectedDate: day.date
       })
+      this.triggerEvent('onPickDay', day)
     },
     parseTime(time, cFormat) {
       if (arguments.length === 0) {

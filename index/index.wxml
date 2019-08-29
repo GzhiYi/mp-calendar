@@ -1,2 +1,7 @@
 <view style="width: 100%;height: 200rpx;"></view>
-<calendar></calendar>
+<calendar
+  bind:onPickDateChange="onPickDateChange"
+  bind:onControl="onControl"
+  bind:onPickDay="onPickDay"
+  defaultSelectDate="2019-08-28"
+></calendar>
