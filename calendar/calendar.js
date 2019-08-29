@@ -98,10 +98,10 @@ Component({
           newDate = oldMonth === 1 ? `${oldYear - 1}-12` : `${oldYear}-${oldMonth - 1 < 10 ? `0${oldMonth - 1}` : oldMonth - 1}`
           break;
         case 'reset':
-          newDate = new Date()
+          newDate = this.data.defaultSelectDate || new Date()
           if (this.data.mode === 'range') {
             this.setData({
-              selectedDate: '',
+              selectedDate: newDate,
               dateRange: []
             })
           } else {
@@ -116,6 +116,9 @@ Component({
       }
       const timeParse = this.parseTime(new Date(newDate), '{y}-{m}')
       this.setCalendar(timeParse)
+      if (mode !== 'reset' && this.data.mode === 'range') {
+        this.findRange(this.data.dateRange)
+      }
       this.triggerEvent('onControl', {
         mode,
         newDate: timeParse
