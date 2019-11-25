@@ -113,7 +113,7 @@ Component({
             })
           } else {
             this.setData({
-              selectedDate: this.parseTime(new Date(), '{y}-{m}-{d}')
+              selectedDate: this.parseTime(newDate, '{y}-{m}-{d}')
             })
           }
           break;
