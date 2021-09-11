@@ -1,5 +1,6 @@
 .calendar {
   width: 80%;
+  max-width: 580rpx;
   background-color: #fff;
   padding: 40rpx 20rpx;
   margin: 0 auto;
@@ -36,7 +37,6 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-
 }
 .day {
   width: 40rpx;
