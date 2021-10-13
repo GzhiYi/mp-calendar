@@ -37,12 +37,14 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+  max-width: 504rpx;
+  margin: 0 auto;
 }
 .day {
   width: 40rpx;
   height: 40rpx;
   text-align: center;
-  padding: 4px 4px;
+  padding: 4rpx 4rpx;
   margin: 6rpx 12rpx;
   font-size: 27rpx;
   line-height: 40rpx;
